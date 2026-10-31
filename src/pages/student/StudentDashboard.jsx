@@ -1,13 +1,11 @@
-import { useEffect, useState, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchMyEnrollments } from "../../store/slices/enrollmentSlice";
+import { useState, useRef } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { getQuizStats } from "../../services/quiz.api";
 import { getAssignmentStats } from "../../services/assignment.api";
 import { getCourseById } from "../../services/courses.api";
 
 export default function StudentDashboard() {
-    const dispatch = useDispatch();
     const { enrollments, loading, error } = useSelector((state) => state.enrollment);
     const { currentCourse } = useSelector((state) => state.courses);
 
@@ -18,9 +16,8 @@ export default function StudentDashboard() {
     // Cache for lesson title lookups to avoid repeated loops
     const lessonTitleCache = useRef({});
 
-    useEffect(() => {
-        dispatch(fetchMyEnrollments());
-    }, [dispatch]);
+    // NOTE: enrollments are fetched globally in MainLayout (once per session);
+    // no local fetch needed here.
 
     // Create lesson title lookup map from course data (optimized)
     const createLessonMap = (courseData) => {

@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Navbar from "../components/shared/Navbar";
 import Footer from "../components/shared/Footer";
@@ -9,6 +9,7 @@ import { fetchMyEnrollments } from "../store/slices/enrollmentSlice";
 export default function MainLayout() {
     const dispatch = useDispatch();
     const { token, isAuthenticated } = useSelector((state) => state.auth);
+    const lastFetchedTokenRef = useRef(null);
 
     useEffect(() => {
         if (token && !isAuthenticated) {
@@ -17,10 +18,12 @@ export default function MainLayout() {
     }, [token, isAuthenticated, dispatch]);
 
     useEffect(() => {
-        if (isAuthenticated) {
+        // Fetch enrollments once per auth token/session to avoid repeated requests
+        if (isAuthenticated && token && lastFetchedTokenRef.current !== token) {
+            lastFetchedTokenRef.current = token;
             dispatch(fetchMyEnrollments());
         }
-    }, [isAuthenticated, dispatch]);
+    }, [isAuthenticated, token, dispatch]);
 
     return (
         <div className="min-h-screen flex flex-col">
