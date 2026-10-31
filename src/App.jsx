@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import MainLayout from "./layouts/MainLayout";
 import ProtectedRoute from "./routes/ProtectedRoute";
+import AdminRoute from "./routes/AdminRoute";
 
 // Public pages - keep these loaded immediately
 import Home from "./pages/Home/Home";
@@ -74,9 +75,11 @@ export default function App() {
             path="/admin"
             element={
               <ProtectedRoute>
-                <Suspense fallback={<LoadingSpinner />}>
-                  <AdminDashboard />
-                </Suspense>
+                <AdminRoute>
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <AdminDashboard />
+                  </Suspense>
+                </AdminRoute>
               </ProtectedRoute>
             }
           >
