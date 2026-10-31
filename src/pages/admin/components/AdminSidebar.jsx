@@ -53,11 +53,14 @@ export default function AdminSidebar() {
 
     return (
         <>
-            {/* Mobile menu button */}
-            <div className="lg:hidden fixed top-16 left-0 right-0 z-40 bg-base-200 border-b-2 border-base-300 p-2 shadow-md">
+            {/* Mobile menu button (sticky so it doesn't overlap content) */}
+            <div className="lg:hidden sticky top-16 z-30 mb-2 rounded-lg bg-base-200 border-b-2 border-base-300 p-2 shadow-md">
                 <button
+                    type="button"
                     onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                     className="btn btn-sm btn-ghost text-base-content"
+                    aria-expanded={mobileMenuOpen}
+                    aria-label="Toggle admin menu"
                 >
                     {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
                     <span className="ml-2 font-semibold">Admin Menu</span>
