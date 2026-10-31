@@ -17,8 +17,8 @@ export default function ProtectedRoute({ children }) {
     getMe()
       .then(() => setIsValid(true))
       .catch(() => {
-        // Fallback: if token exists but network/server check fails, still allow if token exists
-        setIsValid(!!token);
+        // Token verification failed (expired/invalid) → deny access
+        setIsValid(false);
       });
   }, [token]);
 
